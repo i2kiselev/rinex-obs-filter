@@ -36,10 +36,9 @@ public class FileUtils {
 
     public static File writeOutputFile(String path, RinexObservation rinexObservation) {
         File outputFile = getOutputFile(path);
-        FileWriter fileWriter = getFileWriter(outputFile);
-        RinexObservationWriter rinexObservationWriter = new RinexObservationWriter(fileWriter, "output-file");
-        try {
-            rinexObservationWriter.writeCompleteFile(rinexObservation);
+        try (FileWriter fileWriter = getFileWriter(outputFile);
+             RinexObservationWriter obsWriter = new RinexObservationWriter(fileWriter, "output-file")) {
+            obsWriter.writeCompleteFile(rinexObservation);
         } catch (IOException exception) {
             throw new ApplicationException("Exception when writing output file, path : " + path, exception);
         }
