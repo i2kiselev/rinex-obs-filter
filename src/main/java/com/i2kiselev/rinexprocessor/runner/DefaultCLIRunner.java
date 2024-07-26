@@ -1,6 +1,7 @@
 package com.i2kiselev.rinexprocessor.runner;
 
 import com.i2kiselev.rinexprocessor.exception.ApplicationException;
+import com.i2kiselev.rinexprocessor.record.FormatType;
 import com.i2kiselev.rinexprocessor.record.TypeMatrix;
 import com.i2kiselev.rinexprocessor.service.RinexService;
 import com.i2kiselev.rinexprocessor.util.CliUtils;
@@ -44,8 +45,10 @@ public class DefaultCLIRunner {
             String output = StringUtils.replace(outputStr.substring(1, outputStr.length() - 1), "\\", "\\\\");
             String format = commandLine.getOptionValue(Const.FORMAT_TYPE);
             TypeMatrix typeMatrix = new TypeMatrix(commandLine);
-            log.info("Starting processing, input file : {}, config : {}, format : {}", input, typeMatrix, format);
-            rinexService.completeRequest(input, output, typeMatrix, CliUtils.getFormatByString(format));
+            FormatType formatByString = CliUtils.getFormatByString(format);
+            log.info("Starting processing, input file : {}", input);
+            log.info("Type configuration : {}, format : {}", typeMatrix, formatByString);
+            rinexService.completeRequest(input, output, typeMatrix, formatByString);
             log.info("File processed successfully, path : {}", output);
         };
     }

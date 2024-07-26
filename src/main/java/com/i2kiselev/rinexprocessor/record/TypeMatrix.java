@@ -82,8 +82,6 @@ public class TypeMatrix {
 
     @Override
     public String toString() {
-        return "TypeMatrix{" +
-                "satSystemConfigs=" + satSystemConfigs.toString() +
-                '}';
+        return satSystemConfigs.toString();
     }
 }
