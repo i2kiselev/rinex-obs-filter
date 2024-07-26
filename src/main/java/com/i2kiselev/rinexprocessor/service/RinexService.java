@@ -4,6 +4,7 @@ import com.i2kiselev.rinexprocessor.record.FormatType;
 import com.i2kiselev.rinexprocessor.record.TypeMatrix;
 import com.i2kiselev.rinexprocessor.util.FileUtils;
 import com.i2kiselev.rinexprocessor.util.RinexUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.orekit.files.rinex.observation.ObservationData;
 import org.orekit.files.rinex.observation.ObservationDataSet;
 import org.orekit.files.rinex.observation.RinexObservation;
@@ -19,6 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class RinexService {
 
     public static final int NULL_SIGNAL = 0;
@@ -36,14 +38,16 @@ public class RinexService {
     RinexObservation processObservation(String filePath, TypeMatrix typeMatrix, FormatType format) {
         RinexObservation rinexObservation = rinexParser.parseObservation(filePath);
         List<ObservationDataSet> observationDataSets = rinexObservation.getObservationDataSets();
-
+        log.info("Source observation data set size : {}", observationDataSets.size());
         List<ObservationDataSet> filteredBySystems = observationDataSets.stream().filter(x -> typeMatrix.getUsedSystems().contains(x.getSatellite().getSystem())).collect(Collectors.toList());
+        log.info("Observation data set size after system filter : {}", observationDataSets.size());
         List<ObservationDataSet> updatedDataSets = transformObservations(filteredBySystems, typeMatrix, format);
-
+        log.info("Observation data set size after components filter : {}", observationDataSets.size());
+        log.info("Copying rinex file header");
         RinexObservationHeader sourceHeader = rinexObservation.getHeader();
         RinexObservation updatedObservation = new RinexObservation();
         RinexUtils.copyRinexHeader(sourceHeader, updatedObservation.getHeader());
-
+        log.info("Creating updated data set");
         for (ObservationDataSet newDataSet : updatedDataSets) {
             updatedObservation.addObservationDataSet(newDataSet);
         }
