@@ -40,9 +40,9 @@ public class RinexService {
         List<ObservationDataSet> observationDataSets = rinexObservation.getObservationDataSets();
         log.info("Source observation data set size : {}", observationDataSets.size());
         List<ObservationDataSet> filteredBySystems = observationDataSets.stream().filter(x -> typeMatrix.getUsedSystems().contains(x.getSatellite().getSystem())).collect(Collectors.toList());
-        log.info("Observation data set size after system filter : {}", observationDataSets.size());
+        log.info("Observation data set size after system filter : {}", filteredBySystems.size());
         List<ObservationDataSet> updatedDataSets = transformObservations(filteredBySystems, typeMatrix, format);
-        log.info("Observation data set size after components filter : {}", observationDataSets.size());
+        log.info("Observation data set size after components filter : {}", updatedDataSets.size());
         log.info("Copying rinex file header");
         RinexObservationHeader sourceHeader = rinexObservation.getHeader();
         RinexObservation updatedObservation = new RinexObservation();
