@@ -1,15 +1,12 @@
 package com.i2kiselev.rinexprocessor;
 
-import com.i2kiselev.rinexprocessor.service.RinexParser;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class RinexProcessorApplicationTests {
-
-    @Autowired
-    RinexParser rinexParser;
 
     @Test
     void contextLoads() {
