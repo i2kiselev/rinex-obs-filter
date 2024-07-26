@@ -79,4 +79,11 @@ public class TypeMatrix {
     public Set<SatelliteSystem> getUsedSystems() {
         return this.satSystemConfigs.keySet();
     }
+
+    @Override
+    public String toString() {
+        return "TypeMatrix{" +
+                "satSystemConfigs=" + satSystemConfigs.toString() +
+                '}';
+    }
 }

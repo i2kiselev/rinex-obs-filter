@@ -5,6 +5,7 @@ import com.i2kiselev.rinexprocessor.record.TypeMatrix;
 import com.i2kiselev.rinexprocessor.service.RinexService;
 import com.i2kiselev.rinexprocessor.util.CliUtils;
 import com.i2kiselev.rinexprocessor.util.Const;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 
 @Configuration
 @ConditionalOnProperty(value = "app.cli.runner.stub", havingValue = "false", matchIfMissing = true)
+@Slf4j
 public class DefaultCLIRunner {
 
     private final RinexService rinexService;
@@ -26,7 +28,7 @@ public class DefaultCLIRunner {
 
     @Bean
     public CommandLineRunner run() {
-        return  args -> {
+        return args -> {
             Options options = CliUtils.getOptions();
             CommandLineParser parser = new DefaultParser(false);
             CommandLine commandLine;
@@ -42,7 +44,9 @@ public class DefaultCLIRunner {
             String output = StringUtils.replace(outputStr.substring(1, outputStr.length() - 1), "\\", "\\\\");
             String format = commandLine.getOptionValue(Const.FORMAT_TYPE);
             TypeMatrix typeMatrix = new TypeMatrix(commandLine);
+            log.info("Starting processing, input file : {}, config : {}, format : {}", input, typeMatrix, format);
             rinexService.completeRequest(input, output, typeMatrix, CliUtils.getFormatByString(format));
+            log.info("File processed successfully, path : {}", output);
         };
     }
 }
