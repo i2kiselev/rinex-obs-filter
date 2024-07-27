@@ -110,7 +110,7 @@ public class CliUtils {
         if (format.equals(REMOVE)) {
             return FormatType.REMOVE;
         }
-        log.warn("Unknown format type, passed value: {}", format);
+        log.warn("Unknown format type, using NULLIFY, passed value: {}", format);
         return FormatType.NULLIFY;
     }
 }
