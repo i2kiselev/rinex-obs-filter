@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RinexService {
 
-    public static final int NULL_SIGNAL = 0;
+    public static final int NULL_VALUE = 0;
     private final RinexParser rinexParser;
 
     public RinexService(RinexParser rinexParser) {
@@ -97,7 +97,7 @@ public class RinexService {
             if (typeMatrix.getUsedObs(currentSatSystem).contains(x.getObservationType().name())) {
                 return x;
             } else {
-                return new ObservationData(x.getObservationType(), Double.NaN, x.getLossOfLockIndicator(), NULL_SIGNAL);
+                return new ObservationData(x.getObservationType(), Double.NaN, NULL_VALUE, NULL_VALUE);
             }
         };
     }
