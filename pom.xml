@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.i2kiselev</groupId>
     <artifactId>rinex-obs-filter</artifactId>
-    <version>0.1.3</version>
+    <version>0.2.0</version>
     <name>rinex-obs-filter</name>
     <description>rinex-obs-filter</description>
     <url/>
