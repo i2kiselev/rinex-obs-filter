@@ -3,14 +3,17 @@ package com.i2kiselev.rinexprocessor.record;
 import com.i2kiselev.rinexprocessor.exception.ApplicationException;
 import com.i2kiselev.rinexprocessor.util.Const;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.StringUtils;
+import org.orekit.errors.OrekitIllegalArgumentException;
 import org.orekit.gnss.SatelliteSystem;
 
 import java.util.*;
 
 @Data
+@Slf4j
 public class TypeMatrix {
 
     private HashMap<SatelliteSystem, List<String>> satSystemConfigs;
@@ -63,8 +66,13 @@ public class TypeMatrix {
 
     private void processOption(HashMap<SatelliteSystem, List<String>> map, Option option) {
         String satSystem = option.getOpt();
-        SatelliteSystem parsedSystemType = SatelliteSystem.parseSatelliteSystem(satSystem);
-
+        SatelliteSystem parsedSystemType;
+        try {
+            parsedSystemType = SatelliteSystem.parseSatelliteSystem(satSystem);
+        } catch (OrekitIllegalArgumentException exception) {
+            log.warn("Satellite system not found by key : {}, skipping satSystem", satSystem);
+            return;
+        }
         String types = option.getValue();
         types = types.substring(1, types.length() - 1);
         String[] typeList = StringUtils.split(types, ",");
